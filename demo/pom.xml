@@ -15,9 +15,18 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>android</module>
         <module>osgi</module>
     </modules>
+
+    <profiles>
+	<profile>
+		<id>Android</id>
+		<modules>
+			<module>osgi</module>
+			<module>android</module>
+		</modules>
+ 	</profile>
+    </profiles>
 
     <properties>
         <!-- This module (and its sub-modules) doesn't have a manual -->
