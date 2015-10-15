@@ -43,7 +43,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +58,7 @@ public class RegistryImpl implements Registry {
 
     protected UpnpService upnpService;
     protected RegistryMaintainer registryMaintainer;
-    protected final Set<RemoteGENASubscription> pendingSubscriptionsLock = new HashSet();
+    protected final Set<RemoteGENASubscription> pendingSubscriptionsLock = new HashSet<>();
 
     public RegistryImpl() {
     }
@@ -101,9 +100,9 @@ public class RegistryImpl implements Registry {
 
     // #################################################################################################
 
-    protected final Set<RegistryListener> registryListeners = new HashSet();
-    protected final Set<RegistryItem<URI, Resource>> resourceItems = new HashSet();
-    protected final List<Runnable> pendingExecutions = new ArrayList();
+    protected final Set<RegistryListener> registryListeners = new HashSet<>();
+    protected final Set<RegistryItem<URI, Resource>> resourceItems = new HashSet<>();
+    protected final List<Runnable> pendingExecutions = new ArrayList<>();
 
     protected final RemoteItems remoteItems = new RemoteItems(this);
     protected final LocalItems localItems = new LocalItems(this);
@@ -227,14 +226,14 @@ public class RegistryImpl implements Registry {
     }
 
     synchronized public Collection<Device> getDevices() {
-        Set all = new HashSet();
+        Set all = new HashSet<>();
         all.addAll(localItems.get());
         all.addAll(remoteItems.get());
         return Collections.unmodifiableCollection(all);
     }
 
     synchronized public Collection<Device> getDevices(DeviceType deviceType) {
-        Collection<Device> devices = new HashSet();
+        Collection<Device> devices = new HashSet<>();
 
         devices.addAll(localItems.get(deviceType));
         devices.addAll(remoteItems.get(deviceType));
@@ -243,7 +242,7 @@ public class RegistryImpl implements Registry {
     }
 
     synchronized public Collection<Device> getDevices(ServiceType serviceType) {
-        Collection<Device> devices = new HashSet();
+        Collection<Device> devices = new HashSet<>();
 
         devices.addAll(localItems.get(serviceType));
         devices.addAll(remoteItems.get(serviceType));
@@ -300,7 +299,7 @@ public class RegistryImpl implements Registry {
     }
 
     synchronized public Collection<Resource> getResources() {
-        Collection<Resource> s = new HashSet();
+        Collection<Resource> s = new HashSet<>();
         for (RegistryItem<URI, Resource> resourceItem : resourceItems) {
             s.add(resourceItem.getItem());
         }
@@ -308,7 +307,7 @@ public class RegistryImpl implements Registry {
     }
 
     synchronized public <T extends Resource> Collection<T> getResources(Class<T> resourceType) {
-        Collection<T> s = new HashSet();
+        Collection<T> s = new HashSet<>();
         for (RegistryItem<URI, Resource> resourceItem : resourceItems) {
             if (resourceType.isAssignableFrom(resourceItem.getItem().getClass()))
                 s.add((T) resourceItem.getItem());
@@ -504,7 +503,7 @@ public class RegistryImpl implements Registry {
         }
 
     }
-    
+
  	@Override
 	public void registerPendingRemoteSubscription(RemoteGENASubscription subscription) {
 		synchronized (pendingSubscriptionsLock) {
@@ -524,21 +523,17 @@ public class RegistryImpl implements Registry {
     @Override
     public RemoteGENASubscription getWaitRemoteSubscription(String subscriptionId) {
         synchronized (pendingSubscriptionsLock) {
-            do {
-                RemoteGENASubscription subscription = getRemoteSubscription(subscriptionId);
-                if (subscription != null) {
-                    return subscription;
+            RemoteGENASubscription subscription = getRemoteSubscription(subscriptionId);
+            while (subscription == null && !pendingSubscriptionsLock.isEmpty()) {
+                try {
+                    log.finest("Subscription not found, waiting for pending subscription procedure to terminate.");
+                    pendingSubscriptionsLock.wait();
+                } catch (InterruptedException e) {
                 }
-                if (!pendingSubscriptionsLock.isEmpty()) {
-                    try {
-                        log.finest("Subscription not found, waiting for pending subscription procedure to terminate." );
-                        pendingSubscriptionsLock.wait();
-                    } catch (InterruptedException e) {
-                    }
-                }
-            } while (!pendingSubscriptionsLock.isEmpty());
+                subscription = getRemoteSubscription(subscriptionId);
+            }
+            return subscription;
         }
-        return null;
     }
 
 }
