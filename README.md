@@ -37,3 +37,14 @@ mvn clean install
   </dependency>
 </dependencies>
 ````
+
+
+ABOUT THIS REPOSITORY
+-------------------------
+
+This repository has been cloned from: https://github.com/4thline/cling.git
+
+Then I have change remotes to be able to update from the original repository and push to my own copy of it.
+
+  git remote set-url origin https://github.com/4thline/cling.git
+  git remote set-url --push origin https://github.com/jomarmar/cling.git
