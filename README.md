@@ -48,5 +48,5 @@ Then I have change remotes to be able to update from the original repository and
 
 ````
   git remote set-url origin https://github.com/4thline/cling.git
-  git remote set-url --push origin https://github.com/jomarmar/cling.git`
+  git remote set-url --push origin https://github.com/jomarmar/cling.git
 ````
