@@ -96,14 +96,14 @@ public class InitialIntegrationTest extends BaseIntegration {
                 .type("xml")
                 .versionAsInProject();
         return new Option[] {
-                debugConfiguration("5005", true),
+                //debugConfiguration("5005", true),
                 karafDistributionConfiguration()
                         .frameworkUrl(karafUrl)
                         .unpackDirectory(new File("target/exam"))
                         .useDeployFolder(false),
                 keepRuntimeFolder(),
                 logLevel(LogLevelOption.LogLevel.INFO),
-                KarafDistributionOption.features(karafStandardRepo, "scr, eventadmin, jetty"),
+                KarafDistributionOption.features(karafStandardRepo, "eventadmin, jetty"),
 
 
                 mavenBundle().groupId("org.osgi").artifactId("org.osgi.core").versionAsInProject().start(),
