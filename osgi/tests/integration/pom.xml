@@ -193,7 +193,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.fourthline.cling.osgi</groupId>
             <artifactId>httpcomponents-http-core</artifactId>
             <version>${apache.httpcomponents.httpcore.version}</version>
@@ -205,7 +205,7 @@
             <artifactId>httpcomponents-http-client</artifactId>
             <version>${apache.httpcomponents.httpclient.version}</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency> -->
 
 
 

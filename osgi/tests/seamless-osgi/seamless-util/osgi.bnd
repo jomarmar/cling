@@ -8,5 +8,5 @@
 #
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: *;resolution:=optional
-Export-Package: !org.osgi.*,*
+Export-Package: !org.osgi.*,!org.seamless.*,*
 Embed-Dependency: *;scope=compile|runtime;type=!pom;inline=true

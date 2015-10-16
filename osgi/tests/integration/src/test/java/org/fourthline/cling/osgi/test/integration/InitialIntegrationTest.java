@@ -96,7 +96,7 @@ public class InitialIntegrationTest extends BaseIntegration {
                 .type("xml")
                 .versionAsInProject();
         return new Option[] {
-                //debugConfiguration("5005", true),
+                debugConfiguration("5005", true),
                 karafDistributionConfiguration()
                         .frameworkUrl(karafUrl)
                         .unpackDirectory(new File("target/exam"))
@@ -112,8 +112,8 @@ public class InitialIntegrationTest extends BaseIntegration {
                 mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("seamless-util").versionAsInProject().start(),
                 mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("seamless-xml").versionAsInProject().start(),
 
-                mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("httpcomponents-http-core").versionAsInProject().start(),
-                mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("httpcomponents-http-client").versionAsInProject().start(),
+                //mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("httpcomponents-http-core").versionAsInProject().start(),
+                //mavenBundle().groupId("org.fourthline.cling.osgi").artifactId("httpcomponents-http-client").versionAsInProject().start(),
 
                 mavenBundle().groupId("commons-codec").artifactId("commons-codec").versionAsInProject().start(),
 

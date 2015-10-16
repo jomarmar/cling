@@ -161,7 +161,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>${apache.httpcomponents.httpcore.version}</version>
@@ -173,7 +173,7 @@
             <artifactId>httpclient</artifactId>
             <version>${apache.httpcomponents.httpclient.version}</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>commons-logging</groupId>
